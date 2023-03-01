@@ -10,6 +10,9 @@ image:
 imagePullSecrets: []
 
 nsqlookupd:
+  service:
+    type: NodePort
+
   enabled: true
 
   fullnameOverride:
@@ -103,6 +106,10 @@ nsqadmin:
   affinity: {}
 
 nsqd:
+  extraService:
+    enabled: true
+    type: NodePort
+
   enabled: true
 
   fullnameOverride:

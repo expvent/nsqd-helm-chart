@@ -1,0 +1,4 @@
+# app版本号会用于docker镜像的版本号
+app=1.2.1
+# chart版本号用于helm chart的版本，不能加v前缀
+chart=1.0.1

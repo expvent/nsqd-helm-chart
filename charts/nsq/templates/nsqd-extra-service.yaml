@@ -1,0 +1,30 @@
+{{- if .Values.nsqd.extraService.enabled }}
+  {{- range $i, $e := until (atoi (printf "%d" (int64 .Values.nsqd.replicaCount))) }}
+---
+{{- $podname := printf "%s-%d" (include "nsq.nsqd.fullname" $) $i }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $podname }}
+  labels:
+    {{- include "nsq.commonLabels" $ | nindent 4 }}
+  {{- with $.Values.nsqd.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ $.Values.nsqd.extraService.type }}
+  ports:
+  - name: http
+    port: 4151
+    protocol: TCP
+    targetPort: http
+  - name: tcp
+    port: 4150
+    protocol: TCP
+    targetPort: tcp
+  selector:
+    {{- include "nsq.nsqd.selectorLabels" $ | nindent 4 }}
+    statefulset.kubernetes.io/pod-name: {{ $podname }}
+    {{- end }}
+{{- end }}

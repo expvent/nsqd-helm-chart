@@ -5,7 +5,10 @@ metadata:
   labels:
     {{- include "nsq.commonLabels" . | nindent 4 }}
 spec:
+  type: {{ .Values.nsqlookupd.service.type }}
+  {{- if eq .Values.nsqlookupd.service.type "ClusterIP" }}
   clusterIP: None
+  {{- end }}
   ports:
   - port: 4160
     name: tcp
